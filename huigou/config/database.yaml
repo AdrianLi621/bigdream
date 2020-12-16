@@ -1,0 +1,10 @@
+DBDriver: "mysql"
+Host: "47.100.186.98"
+Port: 3306
+UserName: "root"
+Password: "lijingqwer"
+DBName: "yali"
+MaxIdleConns: 100
+MaxOpenConns: 5
+
+

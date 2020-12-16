@@ -1,15 +1,8 @@
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-	"io"
-)
+import "bigdream/huigou/router"
 
-func main(){
-	g:=gin.Default()
-	g.GET("/", func(context *gin.Context) {
-		io.WriteString(context.Writer,"success")
-	})
-	g.Run(":8899")
+func main() {
+	router.InitRouter()
+
 }
-
