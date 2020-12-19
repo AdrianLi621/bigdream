@@ -1,7 +1,6 @@
 <template>
-  <el-aside style="width: 200px;">
-    <el-menu class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
-             router>
+  <el-aside class="aside-layout">
+    <el-menu class="el-menu" router>
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>
@@ -16,6 +15,7 @@
           <span>商品管理</span>
         </template>
         <el-menu-item index="/goods">商品列表</el-menu-item>
+        <el-menu-item index="/goods_class">商品分类</el-menu-item>
       </el-submenu>
     </el-menu>
   </el-aside>
@@ -26,5 +26,19 @@
 </script>
 
 <style scoped>
-
+.el-aside{
+  overflow: hidden;
+  flex: 0 0 208px;
+  max-width: 208px;
+  min-width: 208px;
+  width: 208px;
+}
+.aside-layout{
+  position: fixed;
+  z-index: 100;
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+  box-shadow: 2px 0 8px 0 rgba(29,35,41,.05);
+}
 </style>

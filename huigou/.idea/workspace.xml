@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -20,15 +23,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edee7cd3-db1e-4f10-baaf-3f46c37b4642" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/api/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/router/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/log.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/log.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/initialize/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/initialize/log.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/css/app.aa4f5d6a.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/css/chunk-vendors.84bb20f7.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/fonts/element-icons.535877f5.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/fonts/element-icons.732389de.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/js/app.4d3a060b.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/js/app.4d3a060b.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/js/chunk-vendors.085b8138.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/dist/js/chunk-vendors.085b8138.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/components/Layout/Aside.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/components/Layout/Aside.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/plugins/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/plugins/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/initialize/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/initialize/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" path="D:\Go" />
   <component name="Git.Settings">
@@ -38,7 +65,9 @@
     <option name="indexEntireGoPath" value="false" />
   </component>
   <component name="ProjectId" id="1llOkbuB21JKaIO1FlCQ2BFfv8G" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -46,6 +75,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
@@ -53,6 +83,7 @@
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -71,6 +102,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -80,5 +112,17 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="679" y="320" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1608173450702" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1608362686622">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1608362686622" />
+    <state x="574" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1608346264338">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="574" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1608346264338" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1608361089438">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1608361089438" />
   </component>
 </project>

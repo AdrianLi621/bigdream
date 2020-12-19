@@ -1,12 +1,14 @@
 <template>
   <div class="home">
-    <Header></Header>
     <el-container>
       <Aside></Aside>
-      <el-main>
-        <router-view>
-        </router-view>
-      </el-main>
+      <el-container style="position: relative">
+        <Header></Header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+        <el-footer>Footer</el-footer>
+      </el-container>
     </el-container>
   </div>
 </template>
@@ -23,3 +25,6 @@ export default {
   }
 }
 </script>
+<style>
+
+</style>

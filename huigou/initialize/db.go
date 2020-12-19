@@ -2,9 +2,10 @@ package initialize
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"sync"
 )
 
@@ -45,20 +46,20 @@ func LoadDBConfig() *viper.Viper {
 */
 func ConnectDB() *gorm.DB {
 	v := LoadDBConfig()
-	driver := v.Get("DBDriver").(string)
 	host := v.Get("Host").(string)
 	user := v.Get("UserName").(string)
 	password := v.Get("Password").(string)
 	port := v.Get("Port").(int)
 	database := v.Get("DBName").(string)
-	idle := v.Get("MaxIdleConns").(int)
-	openconn := v.Get("MaxOpenConns").(int)
-	str := fmt.Sprintf("%s:%s@(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, database)
-	db, err := gorm.Open(driver, str)
+	str := fmt.Sprintf("%s:%s@(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, password, host, port, database)
+	db, err := gorm.Open(mysql.Open(str), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "hg_",
+			SingularTable: true,
+		},
+	})
 	if err != nil {
 		panic("连接数据库失败")
 	}
-	db.DB().SetMaxIdleConns(idle)
-	db.DB().SetMaxOpenConns(openconn)
 	return db
 }

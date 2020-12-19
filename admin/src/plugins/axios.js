@@ -12,9 +12,13 @@ const config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
+  baseURL: 'http://127.0.0.1:8888/admin/',
+  timeout: 1000,
+  headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 }
 
 const _axios = axios.create(config)
+
 
 _axios.interceptors.request.use(
   function (config) {

@@ -5,6 +5,7 @@ import Admin from '../views/Admin.vue'
 import Role from '../views/Role.vue'
 import Welcome from '../views/Welcome.vue'
 import Goods from '../views/Goods.vue'
+import GoodsClass from '../views/GoodsClass.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
         path: '/goods',
         name: 'Goods',
         component: Goods
+      },
+      {
+        path: '/goods_class',
+        name: 'GoodsClass',
+        component: GoodsClass
       }
     ]
   }

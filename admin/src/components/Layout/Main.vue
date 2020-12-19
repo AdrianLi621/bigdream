@@ -9,5 +9,9 @@
 </script>
 
 <style scoped>
-
+.el-main{
+  position: relative;
+  margin: 24px;
+  flex: auto;
+}
 </style>
