@@ -3,38 +3,55 @@ package controller
 import (
 	"bigdream/huigou/app/api/service"
 	. "bigdream/huigou/pkg"
-	"fmt"
-
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 )
 
 type GoodsForm struct {
-	GoodsName      string   `form:"goods_name" json:"goods_name" binding:"required"`
-	GoodsBarcode   string   `form:"goods_barcode" json:"goods_barcode" binding:"required"`
-	GoodsGcId      int      `form:"goods_gc_id" json:"goods_gc_id" binding:"required"`
-	GoodsGcId1     int      `form:"goods_gc_id1" json:"goods_gc_id1" binding:"required"`
-	GoodsGcId2     int      `form:"goods_gc_id2" json:"goods_gc_id2" binding:"required"`
-	GoodsGcId3     int      `form:"goods_gc_id3" json:"goods_gc_id3" binding:"required"`
-	GoodsGcName    string   `form:"goods_gc_name" json:"goods_gc_name" binding:"required"`
-	GoodsPrice     int      `form:"goods_price" json:"goods_price" binding:"required"`
-	GoodsInventory int      `form:"goods_inventory" json:"goods_inventory" binding:"required"`
-	GoodsState     int      `form:"goods_state" json:"goods_state" `
-	Attrs          int      `form:"attr_id" json:"attr_id"`
-	AttrValueId    int      `form:"attr_value_id" json:"attr_value_id"`
-	AttrValueName  string   `form:"attr_value_name" json:"attr_value_name"`
-	GoodsImage     []string `form:"goods_image" json:"goods_image"`
-	GoodsDescribe  string   `form:"goods_describe" json:"goods_describe" binding:"required"`
-	GoodsImgUrl    string   `form:"goods_img_url" json:"goods_img_url" binding:"required"`
-	GoodsImgSort   int      `form:"goods_img_sort" json:"goods_img_sort"`
+	GoodsName     string `form:"goods_name" json:"goods_name" binding:"required"`
+	GoodsGcId     int    `form:"goods_gc_id" json:"goods_gc_id" binding:"required"`
+	GoodsGcId1    int    `form:"goods_gc_id1" json:"goods_gc_id1" binding:"required"`
+	GoodsGcId2    int    `form:"goods_gc_id2" json:"goods_gc_id2" binding:"required"`
+	GoodsGcId3    int    `form:"goods_gc_id3" json:"goods_gc_id3" binding:"required"`
+	GoodsGcName   string `form:"goods_gc_name" json:"goods_gc_name" binding:"required"`
+	GoodsState    int    `form:"goods_state" json:"goods_state" `
+	GoodsDescribe string `form:"goods_describe" json:"goods_describe" binding:"required"`
+	GoodsImgUrl   string `form:"goods_img_url" json:"goods_img_url" binding:"required"`
+	GoodsImgSort  int    `form:"goods_img_sort" json:"goods_img_sort"`
+	GoodsInfo     []Info `json:"goods_info" form:"goods_info"`
+	GoodsAttr     []Attr `json:"goods_attr" form:"goods_attr"`
+}
+type Attr struct {
+	AttrId   int    `form:"attr_id" json:"attr_id"`
+	AttrName string `form:"attr_name" json:"attr_name"`
+	Child    []struct {
+		AttrValueId   int    `form:"attr_value_id" json:"attr_value_id"`
+		AttrValueName string `form:"attr_value_name" json:"attr_value_name"`
+	}
+}
+
+type Info struct {
+	GoodsSku       string   `form:"goods_sku" json:"goods_sku"`
+	GoodsBarcode   string   `form:"goods_barcode" json:"goods_barcode"`
+	GoodsPrice     int      `form:"goods_price" json:"goods_price"`
+	GoodsInventory int      `form:"goods_inventory" json:"goods_inventory"`
+	GoodsImages    []string `form:"goods_images" json:"goods_images"`
+	Spec           []struct {
+		AttrValueId   int    `form:"attr_value_id" json:"attr_value_id"`
+		AttrValueName string `form:"attr_value_name" json:"attr_value_name"`
+	}
 }
 
 func CreateGoods(ctx *gin.Context) {
 	var goods GoodsForm
-	if err := ctx.ShouldBind(&goods); err != nil {
+	if err := ctx.ShouldBindJSON(&goods); err != nil {
 		BadResponse(ctx, 0, nil, err.Error())
 		return
 	}
-
+	bytes, err := json.Marshal(goods.GoodsAttr)
+	if err != nil {
+		BadResponse(ctx, 0, nil, err.Error())
+	}
 	common_data := make(map[string]interface{})
 	common_data["goods_name"] = goods.GoodsName
 	common_data["goods_gc_id"] = goods.GoodsGcId
@@ -44,30 +61,43 @@ func CreateGoods(ctx *gin.Context) {
 	common_data["goods_image"] = goods.GoodsImgUrl
 	common_data["goods_describe"] = goods.GoodsDescribe
 	common_data["goods_gc_name"] = goods.GoodsGcName
+	common_data["goods_spec"] = string(bytes)
 
-	//fmt.Println(common_data)
 	common_id := service.InsertGoodsCommon(common_data)
 
-	fmt.Println(common_id)
+	if len(goods.GoodsInfo) > 0 {
+		for _, v := range goods.GoodsInfo {
+			spec, err := json.Marshal(v.Spec)
+			if err != nil {
+				BadResponse(ctx, 0, nil, err.Error())
+			}
+			var str_name string
+			for _, v := range v.Spec {
+				str_name += " "+v.AttrValueName
+			}
+			goods_data := make(map[string]interface{})
+			goods_data["goods_commonid"] = common_id
+			goods_data["goods_sku"] = v.GoodsSku
+			goods_data["goods_barcode"] = v.GoodsBarcode
+			goods_data["goods_name"] = goods.GoodsName + str_name
+			goods_data["goods_gc_id"] = goods.GoodsGcId
+			goods_data["goods_gc_id1"] = goods.GoodsGcId1
+			goods_data["goods_gc_id2"] = goods.GoodsGcId2
+			goods_data["goods_gc_id3"] = goods.GoodsGcId3
+			goods_data["goods_gc_name"] = goods.GoodsGcName
+			goods_data["goods_price"] = v.GoodsPrice
+			goods_data["goods_inventory"] = v.GoodsInventory
+			goods_data["goods_spec"] = string(spec)
 
-	goods_data := make(map[string]interface{})
-	goods_data["goods_commonid"] = common_id
-	goods_data["goods_name"] = goods.GoodsName
-	goods_data["goods_gc_id"] = goods.GoodsGcId
-	goods_data["goods_gc_id1"] = goods.GoodsGcId1
-	goods_data["goods_gc_id2"] = goods.GoodsGcId2
-	goods_data["goods_gc_id3"] = goods.GoodsGcId3
-	goods_data["goods_gc_name"] = goods.GoodsGcName
-	goods_data["goods_sku"] = goods.GoodsGcName
-	goods_data["goods_barcode"] = goods.GoodsGcName
-	goods_data["goods_price"] = goods.GoodsPrice
-	goods_data["goods_inventory"] = goods.GoodsInventory
+			goods_id := service.InsertGoods(goods_data)
 
-	goods_data["attr_id"] = goods.GoodsInventory
-	goods_data["attr_name"] = goods.GoodsInventory
-	goods_data["attr_value_id"] = goods.GoodsInventory
-	goods_data["attr_value_name"] = goods.GoodsInventory
-
-	service.InsertGoods(goods_data)
+			for _, val := range v.GoodsImages {
+				image_data := make(map[string]interface{})
+				image_data["goods_id"] = goods_id
+				image_data["goods_img_url"] = val
+				service.InsertGoodsImages(image_data)
+			}
+		}
+	}
 
 }
