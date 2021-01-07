@@ -12,6 +12,7 @@ import (
 type GoodsCommon struct {
 	GoodsCommonid int       `gorm:"goods_commonid;AUTO_INCREMENT;primary_key" json:"goods_commonid" `
 	GoodsName     string    `gorm:"goods_name" json:"goods_name"`
+	StoreId       int       `grom:"store_id" json:"store_id"`
 	GoodsGcId     int       `grom:"goods_gc_id" json:"goods_gc_id"`
 	GoodsGcId1    int       `grom:"goods_gc_id1" json:"goods_gc_id1"`
 	GoodsGcId2    int       `gorm:"goods_gc_id2" json:"goods_gc_id2"`
@@ -32,6 +33,7 @@ type GoodsCommon struct {
 func InsertGoodsCommon(data map[string]interface{}) int {
 	var goods_common = &GoodsCommon{
 		GoodsName:     data["goods_name"].(string),
+		StoreId:       data["store_id"].(int),
 		GoodsGcId:     data["goods_gc_id"].(int),
 		GoodsGcId1:    data["goods_gc_id1"].(int),
 		GoodsGcId2:    data["goods_gc_id2"].(int),

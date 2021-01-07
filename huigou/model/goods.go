@@ -12,6 +12,7 @@ import (
 type Goods struct {
 	GoodsId        int       `gorm:"goods_id;AUTO_INCREMENT;primary_key" json:"goods_id" `
 	GoodsCommonid  int       `gorm:"goods_commonid" json:"goods_commonid"`
+	StoreId     int    `form:"store_id" json:"store_id" binding:"required"`
 	GoodsSku       string    `grom:"goods_sku" json:"goods_sku"`
 	GoodsName      string    `grom:"goods_name" json:"goods_name"`
 	GoodsBarcode   string    `gorm:"goods_barcode" json:"goods_barcode"`
@@ -37,6 +38,7 @@ func InsertGoods(data map[string]interface{}) int {
 	var goods = &Goods{
 		GoodsCommonid:  data["goods_commonid"].(int),
 		GoodsSku:       data["goods_sku"].(string),
+		StoreId:        data["store_id"].(int),
 		GoodsName:      data["goods_name"].(string),
 		GoodsBarcode:   data["goods_barcode"].(string),
 		GoodsGcId:      data["goods_gc_id"].(int),

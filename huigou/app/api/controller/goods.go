@@ -9,6 +9,7 @@ import (
 
 type GoodsForm struct {
 	GoodsName     string `form:"goods_name" json:"goods_name" binding:"required"`
+	StoreId       int    `form:"store_id" json:"store_id" binding:"required"`
 	GoodsGcId     int    `form:"goods_gc_id" json:"goods_gc_id" binding:"required"`
 	GoodsGcId1    int    `form:"goods_gc_id1" json:"goods_gc_id1" binding:"required"`
 	GoodsGcId2    int    `form:"goods_gc_id2" json:"goods_gc_id2" binding:"required"`
@@ -41,7 +42,9 @@ type Info struct {
 		AttrValueName string `form:"attr_value_name" json:"attr_value_name"`
 	}
 }
-
+/**
+创建产品
+ */
 func CreateGoods(ctx *gin.Context) {
 	var goods GoodsForm
 	if err := ctx.ShouldBindJSON(&goods); err != nil {
@@ -61,6 +64,7 @@ func CreateGoods(ctx *gin.Context) {
 	common_data["goods_image"] = goods.GoodsImgUrl
 	common_data["goods_describe"] = goods.GoodsDescribe
 	common_data["goods_gc_name"] = goods.GoodsGcName
+	common_data["store_id"] = goods.StoreId
 	common_data["goods_spec"] = string(bytes)
 
 	common_id := service.InsertGoodsCommon(common_data)
@@ -73,7 +77,7 @@ func CreateGoods(ctx *gin.Context) {
 			}
 			var str_name string
 			for _, v := range v.Spec {
-				str_name += " "+v.AttrValueName
+				str_name += " " + v.AttrValueName
 			}
 			goods_data := make(map[string]interface{})
 			goods_data["goods_commonid"] = common_id
@@ -88,7 +92,7 @@ func CreateGoods(ctx *gin.Context) {
 			goods_data["goods_price"] = v.GoodsPrice
 			goods_data["goods_inventory"] = v.GoodsInventory
 			goods_data["goods_spec"] = string(spec)
-
+			goods_data["store_id"] = goods.StoreId
 			goods_id := service.InsertGoods(goods_data)
 
 			for _, val := range v.GoodsImages {
@@ -99,5 +103,5 @@ func CreateGoods(ctx *gin.Context) {
 			}
 		}
 	}
-
+	SuccessResponse(ctx, 0, nil, "添加成功")
 }
