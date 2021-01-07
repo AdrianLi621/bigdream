@@ -4,7 +4,6 @@ import (
 	"bigdream/huigou/app/api/service"
 	"bigdream/huigou/model"
 	. "bigdream/huigou/pkg"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,7 +11,12 @@ type SelectStore struct {
 	Page     int `form:"page" json:"page"`
 	PageSize int `form:"page_size" json:"page_size"`
 }
-
+type GetStoreGoods struct {
+	StoreID     int `form:"store_id" json:"store_id"  binding:"required"`
+}
+type GetGoodsInfo struct {
+	CommonId     int `form:"common_id" json:"common_id"  binding:"required"`
+}
 /**
 获取店铺列表
 */
@@ -36,5 +40,55 @@ func StoreList(ctx *gin.Context) {
 	response["list"] = list
 	response["count"] = count
 
+	SuccessResponse(ctx, 1, response, "获取成功")
+}
+/**
+获取产品列表
+*/
+func StoreGoodsList(ctx *gin.Context) {
+	var list GetStoreGoods
+	if err := ctx.ShouldBindJSON(&list); err != nil {
+		BadResponse(ctx, 0, nil, err.Error())
+		return
+	}
+	condition := make(map[string]interface{})
+	condition["store_id"] = list.StoreID
+	condition["is_delete"] = 0
+	var data []model.GoodsCommon
+	count := service.CountGoodsCommon(condition)
+	if count > 0 {
+		data=service.SelectGoodsByCommonid(condition,0,0,"")
+	}
+	response := make(map[string]interface{})
+
+	response["list"] = data
+	response["count"] = count
+
 	SuccessResponse(ctx, 1, response, "")
+
+}
+/**
+获取产品详情
+*/
+func StoreGoodsInfo(ctx *gin.Context) {
+	var list GetGoodsInfo
+	if err := ctx.ShouldBindJSON(&list); err != nil {
+		BadResponse(ctx, 0, nil, err.Error())
+		return
+	}
+	condition := make(map[string]interface{})
+	condition["common_id"] = list.CommonId
+	condition["is_delete"] = 0
+	var data []model.GoodsCommon
+	count := service.CountGoodsCommon(condition)
+	if count > 0 {
+		data=service.SelectGoodsByCommonid(condition,0,0,"")
+	}
+	response := make(map[string]interface{})
+
+	response["list"] = data
+	response["count"] = count
+
+	SuccessResponse(ctx, 1, response, "")
+
 }

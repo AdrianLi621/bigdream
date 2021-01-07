@@ -61,3 +61,44 @@ func InsertGoods(data map[string]interface{}) int {
 	}
 	return goods.GoodsId
 }
+/**
+统计数量
+*/
+func CountGoods(condition map[string]interface{}) int64 {
+	var count int64
+	query := DB.Model(&Goods{}).Where("1=1")
+	if _, ok := condition["store_id"]; ok {
+		query = query.Where("store_id", condition["store_id"])
+	}
+	if _, ok := condition["is_delete"]; ok {
+		query = query.Where("is_delete", condition["is_delete"])
+	}
+	query.Count(&count)
+	return count
+}
+
+/**
+查询所有店铺
+*/
+func SelectGoods(condition map[string]interface{}, page int, pageSize int, orderBy string) []Goods {
+	var sto []Goods
+	query := DB.Model(&Goods{}).Where("1=1")
+	if _, ok := condition["store_id"]; ok {
+		query = query.Where("store_id", condition["store_id"])
+	}
+	if _, ok := condition["is_delete"]; ok {
+		query = query.Where("is_delete", condition["is_delete"])
+	}
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	query = query.Limit(pageSize).Offset((page - 1) * pageSize)
+	if len(orderBy) > 0 {
+		query = query.Order(orderBy)
+	}
+	query.Find(&sto)
+	return sto
+}

@@ -25,6 +25,7 @@ type GoodsCommon struct {
 	IsDelete      int       `gorm:"is_delete" json:"is_delete"`
 	AddTime       time.Time `grom:"add_time" json:"add_time"`
 	UpdateTime    time.Time `gorm:"update_time" json:"update_time"`
+	GoodsList  []Goods      `gorm:"FOREIGNKEY:goods_commonid" json:"goods_list"`
 }
 
 /**
@@ -52,4 +53,76 @@ func InsertGoodsCommon(data map[string]interface{}) int {
 		fmt.Println("插入公共产品失败", err.Error)
 	}
 	return goods_common.GoodsCommonid
+}
+/**
+统计数量
+*/
+func CountGoodsCommon(condition map[string]interface{}) int64 {
+	var count int64
+	query := DB.Model(&GoodsCommon{}).Where("1=1")
+	if _, ok := condition["store_id"]; ok {
+		query = query.Where("store_id", condition["store_id"])
+	}
+	if _, ok := condition["is_delete"]; ok {
+		query = query.Where("is_delete", condition["is_delete"])
+	}
+	if _, ok := condition["common_id"]; ok {
+		query = query.Where("goods_commonid", condition["common_id"])
+	}
+	query.Count(&count)
+	return count
+}
+
+/**
+查询所有店铺
+*/
+func SelectGoodsCommon(condition map[string]interface{}, page int, pageSize int, orderBy string) []GoodsCommon {
+	var sto []GoodsCommon
+	query := DB.Model(&GoodsCommon{}).Where("1=1")
+	if _, ok := condition["store_id"]; ok {
+		query = query.Where("store_id", condition["store_id"])
+	}
+	if _, ok := condition["is_delete"]; ok {
+		query = query.Where("is_delete", condition["is_delete"])
+	}
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	query = query.Limit(pageSize).Offset((page - 1) * pageSize)
+	if len(orderBy) > 0 {
+		query = query.Order(orderBy)
+	}
+	query.Find(&sto)
+	return sto
+}
+/**
+查询所有店铺 by commonid
+*/
+func SelectGoodsByCommonid(condition map[string]interface{}, page int, pageSize int, orderBy string) []GoodsCommon {
+	var sto []GoodsCommon
+	query := DB.Model(&GoodsCommon{}).Preload("GoodsList").Where("1=1")
+	if _, ok := condition["store_id"]; ok {
+		query = query.Where("store_id", condition["store_id"])
+	}
+	if _, ok := condition["is_delete"]; ok {
+		query = query.Where("is_delete", condition["is_delete"])
+	}
+	if _, ok := condition["common_id"]; ok {
+		query = query.Where("goods_commonid", condition["common_id"])
+	}
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	query = query.Limit(pageSize).Offset((page - 1) * pageSize)
+	if len(orderBy) > 0 {
+		query = query.Order(orderBy)
+	}
+	query.Find(&sto)
+	return sto
 }
