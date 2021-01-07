@@ -1,7 +1,7 @@
-Host: "127.0.0.1"
+Host: "121.5.22.154"
 Port: 3306
 UserName: "root"
-Password: "root"
+Password: "123456"
 DBName: "yali"
 
 
