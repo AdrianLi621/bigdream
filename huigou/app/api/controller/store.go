@@ -2,11 +2,9 @@ package controller
 
 import (
 	"bigdream/huigou/app/api/service"
-	"bigdream/huigou/initialize"
 	"bigdream/huigou/model"
 	. "bigdream/huigou/pkg"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type SelectStore struct {
@@ -84,8 +82,8 @@ func StoreGoodsInfo(ctx *gin.Context) {
 	var data []model.GoodsCommon
 	count := service.CountGoodsCommon(condition)
 
-	logger:=initialize.InitLogger("555555.log","info")
-	logger.Info("打印",zap.Int64("line",count))
+	//logger:=initialize.InitLogger("555555.log","info")
+	//logger.Info("打印",zap.Int64("line",count))
 
 	if count > 0 {
 		data=service.SelectGoodsByCommonid(condition,0,0,"")
