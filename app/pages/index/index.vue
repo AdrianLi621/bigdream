@@ -263,11 +263,21 @@
 			 * 分次请求未作整合
 			 */
 			async loadData() {
+
+				this.$http.post("get_store_list").then(res=>{
+					if(res.data.code == 1){
+						console.log(res.data.data)
+					}
+				}).catch(error=>{
+					console.log(error)
+				})
+
+
 				let carouselList = await this.$api.json('carouselList');
 				this.titleNViewBackground = carouselList[0].background;
 				this.swiperLength = carouselList.length;
 				this.carouselList = carouselList;
-				
+				console.log(carouselList)
 				let goodsList = await this.$api.json('goodsList');
 				this.goodsList = goodsList || [];
 			},
