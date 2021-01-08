@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"bigdream/huigou/pkg"
-	"github.com/lestrrat/go-file-rotatelogs"
+	"github.com/natefinch/lumberjack"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -26,38 +26,57 @@ func LoadLogConfig() *viper.Viper {
 /**
 实例化日志
 */
-func InitLogger(filename string) *zap.SugaredLogger {
+func InitLogger(filename string, loglevel string) *zap.Logger {
 	v := LoadLogConfig()
 	logpath := v.Get("LogPath").(string)
 	if !pkg.FileOrDirIsExist(logpath) {
 		return nil
 	}
 	fullpath := logpath + "/" + filename
-	encoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
-		MessageKey:  "msg",
-		LevelKey:    "level",
-		TimeKey:     "time",
-		CallerKey:   "file",
-		EncodeLevel: zapcore.CapitalLevelEncoder,
-		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-			enc.AppendString(t.Format("2006-01-02 15:04:05"))
-		},
-		EncodeCaller: zapcore.ShortCallerEncoder,
-		EncodeDuration: func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
-			enc.AppendInt64(int64(d) / 1000000)
-		},
-	})
+	hook := lumberjack.Logger{
+		Filename:   fullpath, //日志文件路径
+		MaxSize:    2048,     //最大字节
+		MaxAge:     30,
+		MaxBackups: 7,
+		Compress:   true,
+	}
+	writeSyncer := zapcore.AddSync(&hook)
 
-	warnIoWriter, _ := rotatelogs.New(
-		fullpath+".%Y%m%d",
-		rotatelogs.WithMaxAge(time.Hour*24*5),
-		rotatelogs.WithRotationTime(time.Hour*24),
+	var level zapcore.Level
+	switch loglevel {
+	case "debug":
+		level = zap.DebugLevel
+	case "info":
+		level = zap.InfoLevel
+	case "error":
+		level = zap.ErrorLevel
+	default:
+		level = zap.InfoLevel
+	}
+
+	encoderConfig := zapcore.EncoderConfig{
+		TimeKey:        "time",
+		LevelKey:       "level",
+		NameKey:        "logger",
+		CallerKey:      "linenum",
+		MessageKey:     "msg",
+		StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,  // 小写编码器
+		EncodeTime:     TimeEncoder,
+		EncodeDuration: zapcore.SecondsDurationEncoder, //
+		EncodeCaller:   zapcore.ShortCallerEncoder,      // 短路径编码器
+		EncodeName:     zapcore.FullNameEncoder,
+	}
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(encoderConfig),
+		writeSyncer,
+		level,
 	)
 
-	// 创建Logger
-	core := zapcore.NewTee(
-		zapcore.NewCore(encoder, zapcore.AddSync(warnIoWriter), zap.DebugLevel),
-	)
-	logger := zap.New(core, zap.AddCaller())
-	return logger.Sugar()
+	logger := zap.New(core)
+	return logger
+}
+func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 }
