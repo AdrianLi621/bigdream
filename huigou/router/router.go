@@ -22,6 +22,6 @@ func InitRouter() *gin.Engine {
 	{
 		admin_router.AdminRouter(admin)
 	}
-	router.Run(":8888")
+	router.Run(":9999")
 	return router
 }

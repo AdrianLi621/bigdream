@@ -42,9 +42,10 @@ type Info struct {
 		AttrValueName string `form:"attr_value_name" json:"attr_value_name"`
 	}
 }
+
 /**
 创建产品
- */
+*/
 func CreateGoods(ctx *gin.Context) {
 	var goods GoodsForm
 	if err := ctx.ShouldBindJSON(&goods); err != nil {
