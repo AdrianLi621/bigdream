@@ -9,7 +9,7 @@ import (
 店铺
 */
 type Store struct {
-	StoreId        int       `gorm:"store_id;AUTO_INCREMENT" json:"store_id" `
+	StoreId        int       `gorm:"store_id;AUTO_INCREMENT;primary_key" json:"store_id" `
 	StoreName      string    `gorm:"store_name" json:"store_name"`
 	StoreLogo      string    `grom:"store_logo" json:"store_logo"`
 	ProvinceId     int       `grom:"province_id" json:"province_id"`

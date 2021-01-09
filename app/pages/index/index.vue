@@ -264,22 +264,18 @@
 			 */
 			async loadData() {
 				
-				
-				this.$http.post("get_store_list").then(res=>{
-					if(res.data.code == 1){
-						console.log(res.data.data)
+				this.$http.post("get_carousel_list").then(res=>{
+					var response=res.data
+					if 	(response.code ==1 ){
+						let carouselList =response.data.list
+						this.titleNViewBackground = carouselList[0].background;
+						this.swiperLength = carouselList.length;
+						this.carouselList = carouselList;
 					}
+					
 				}).catch(error=>{
 					console.log(error)
 				})
-				
-				
-				
-				let carouselList = await this.$api.json('carouselList');
-				this.titleNViewBackground = carouselList[0].background;
-				this.swiperLength = carouselList.length;
-				this.carouselList = carouselList;
-				
 				let goodsList = await this.$api.json('goodsList');
 				this.goodsList = goodsList || [];
 			},

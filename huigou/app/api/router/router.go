@@ -2,7 +2,6 @@ package router
 
 import (
 	"bigdream/huigou/app/api/controller"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,5 +16,6 @@ func ApiRouter(group *gin.RouterGroup) {
 		r.POST("get_store_goods", controller.StoreGoodsList) //获取店铺产品
 		r.POST("get_goods_info", controller.StoreGoodsInfo)  // 产品详情
 		r.POST("get_carousel_list", controller.CarouselList) //轮播图列表
+		r.POST("get_seckill_list", controller.SeckillList) //秒杀列表
 	}
 }

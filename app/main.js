@@ -43,7 +43,7 @@ Vue.prototype.$store = store;
 Vue.prototype.$api = {msg, json, prePage};
 
 
-axios.defaults.baseURL = "http://api.huigoumall.cn/"; 
+axios.defaults.baseURL = "http://127.0.0.1:9999/api/"; 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
