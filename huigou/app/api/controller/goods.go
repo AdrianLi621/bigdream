@@ -2,6 +2,7 @@ package controller
 
 import (
 	"bigdream/huigou/app/api/service"
+	"bigdream/huigou/model"
 	. "bigdream/huigou/pkg"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
@@ -107,4 +108,27 @@ func CreateGoods(ctx *gin.Context) {
 		}
 	}
 	SuccessResponse(ctx, 0, nil, "添加成功")
+}
+/**
+搜索
+ */
+func Search(ctx *gin.Context)  {
+	a,_:=SelectDoc("student")
+	var t model.GoodsCommon
+	goods_data := make(map[string]interface{})
+	var num int
+	for _,v:=range a{
+		err:=json.Unmarshal(v.Source,&t)
+		if err != nil {
+			BadResponse(ctx, 0, nil, err.Error())
+		}
+		goods_data["goods_name"] = t.GoodsName
+		goods_data["goods_image"] = t.GoodsImage
+		goods_data["goods_gc_name"] = t.GoodsGcName
+		num++
+	}
+	response := make(map[string]interface{})
+	response["list"] = goods_data
+	response["count"] = num
+	SuccessResponse(ctx, 0, response, "获取成功")
 }
