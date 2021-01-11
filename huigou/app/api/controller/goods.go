@@ -69,7 +69,9 @@ func CreateGoods(ctx *gin.Context) {
 	common_data["goods_spec"] = string(bytes)
 
 	common_id := service.InsertGoodsCommon(common_data)
-
+	snow_flake:=NewSnowFlake()
+	goods_sku:=snow_flake.MakeUniqueId()
+	goods_barcode:=snow_flake.MakeUniqueId()
 	if len(goods.GoodsInfo) > 0 {
 		for _, v := range goods.GoodsInfo {
 			spec, err := json.Marshal(v.Spec)
@@ -82,8 +84,8 @@ func CreateGoods(ctx *gin.Context) {
 			}
 			goods_data := make(map[string]interface{})
 			goods_data["goods_commonid"] = common_id
-			goods_data["goods_sku"] = v.GoodsSku
-			goods_data["goods_barcode"] = v.GoodsBarcode
+			goods_data["goods_sku"] = goods_sku
+			goods_data["goods_barcode"] = goods_barcode
 			goods_data["goods_name"] = goods.GoodsName + str_name
 			goods_data["goods_gc_id"] = goods.GoodsGcId
 			goods_data["goods_gc_id1"] = goods.GoodsGcId1

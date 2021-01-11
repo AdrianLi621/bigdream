@@ -36,7 +36,10 @@ func InitRedis() *redis.Client {
 func SetRedisValue(key string, value interface{}) error {
 	return client.Set(ctx, key, value, 0).Err()
 }
-
+//删除值
+func DelRedisValue(key string) error {
+	return client.Del(ctx, key).Err()
+}
 //获取值
 func GetRedisValue(key string) (string, error) {
 	return client.Get(ctx, key).Result()

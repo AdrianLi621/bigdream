@@ -2,26 +2,15 @@ package controller
 
 import (
 	"bigdream/huigou/app/api/service"
-	"bigdream/huigou/initialize"
 	"bigdream/huigou/model"
 	. "bigdream/huigou/pkg"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"runtime"
-	"time"
 )
 
 /**
 获取秒杀列表
 */
 func SeckillList(ctx *gin.Context) {
-
-
-
-
-
-	runtime.Goexit()
-
 	condition := make(map[string]interface{})
 	condition["state"] = 2
 	condition["is_delete"] = 0
