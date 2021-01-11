@@ -11,6 +11,7 @@ require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/spf13/viper v1.7.1
+	github.com/streadway/amqp v1.0.0
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.17
 	go.uber.org/zap v1.16.0
 	gorm.io/driver/mysql v1.0.3

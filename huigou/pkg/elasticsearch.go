@@ -70,14 +70,13 @@ func InsertDoc(index string,data string)(bool,error){
 查询文档
  */
 func SelectDoc(index string)([]*elastic.SearchHit,error)  {
-	ctx := context.Background()
 	termQuery := elastic.NewTermQuery("goods_name", "小")
 	searchResult, err := client.Search().
 		Index(index).   // search in index "twitter"
 		Query(termQuery).   // specify the query
 		From(0).Size(10).   // take documents 0-9
 		Pretty(true).       // pretty print request and response JSON
-		Do(ctx)             // execute
+		Do(context.Background())             // execute
 	if err != nil {
 		return nil,err
 	}
