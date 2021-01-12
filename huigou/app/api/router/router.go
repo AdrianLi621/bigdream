@@ -2,7 +2,10 @@ package router
 
 import (
 	"bigdream/huigou/app/api/controller"
+	"bigdream/huigou/pkg"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 /**
@@ -19,5 +22,15 @@ func ApiRouter(group *gin.RouterGroup) {
 		r.POST("get_carousel_list", controller.CarouselList) //轮播图列表
 		r.POST("get_seckill_list", controller.SeckillList) //秒杀列表
 		r.Any("search_goods", controller.Search)//搜搜产品
+		r.Any("test", func(ctx *gin.Context) {
+			for i:=0;i<30;i++{
+				res,err:=pkg.ProToWorks("rereir",strconv.Itoa(i))
+				if err !=nil {
+					panic(err)
+				}
+				fmt.Println(res)
+			}
+
+		})
 	}
 }
