@@ -14,3 +14,6 @@ func CountGoodsCommon(condition map[string]interface{}) int64 {
 func SelectGoodsByCommonid(condition map[string]interface{}, page int, pageSize int, orderBy string) []model.GoodsCommon {
 	return model.SelectGoodsByCommonid(condition, page, pageSize, orderBy)
 }
+func UpGoodsCommon(where map[string]interface{},row map[string]interface{})  {
+	model.UpGoodsCommon(where,row)
+}

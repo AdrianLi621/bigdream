@@ -33,8 +33,6 @@ type Attr struct {
 }
 
 type Info struct {
-	GoodsSku       string   `form:"goods_sku" json:"goods_sku"`
-	GoodsBarcode   string   `form:"goods_barcode" json:"goods_barcode"`
 	GoodsPrice     int      `form:"goods_price" json:"goods_price"`
 	GoodsInventory int      `form:"goods_inventory" json:"goods_inventory"`
 	GoodsImages    []string `form:"goods_images" json:"goods_images"`
@@ -71,10 +69,13 @@ func CreateGoods(ctx *gin.Context) {
 
 	common_id := service.InsertGoodsCommon(common_data)
 	snow_flake:=NewSnowFlake()
-	goods_sku:=snow_flake.MakeUniqueId()
-	goods_barcode:=snow_flake.MakeUniqueId()
+	
+	var goods_ids []int
+
 	if len(goods.GoodsInfo) > 0 {
 		for _, v := range goods.GoodsInfo {
+			goods_sku:=snow_flake.MakeUniqueId()
+			goods_barcode:=snow_flake.MakeUniqueId()
 			spec, err := json.Marshal(v.Spec)
 			if err != nil {
 				BadResponse(ctx, 0, nil, err.Error())
@@ -98,7 +99,7 @@ func CreateGoods(ctx *gin.Context) {
 			goods_data["goods_spec"] = string(spec)
 			goods_data["store_id"] = goods.StoreId
 			goods_id := service.InsertGoods(goods_data)
-
+			goods_ids=append(goods_ids,goods_id)
 			for _, val := range v.GoodsImages {
 				image_data := make(map[string]interface{})
 				image_data["goods_id"] = goods_id
@@ -106,6 +107,12 @@ func CreateGoods(ctx *gin.Context) {
 				service.InsertGoodsImages(image_data)
 			}
 		}
+	}
+	if len(goods_ids)>0 {
+		where,row:=make(map[string]interface{}),make(map[string]interface{})
+		where["common_id"]=common_id
+		row["goods_id"]=goods_ids[0]
+		service.UpGoodsCommon(where,row)
 	}
 	SuccessResponse(ctx, 0, nil, "添加成功")
 }

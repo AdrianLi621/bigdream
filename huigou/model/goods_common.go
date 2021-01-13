@@ -126,3 +126,13 @@ func SelectGoodsByCommonid(condition map[string]interface{}, page int, pageSize 
 	query.Find(&sto)
 	return sto
 }
+/**
+更新产品
+*/
+func UpGoodsCommon(condition map[string]interface{},row map[string]interface{}){
+	query := DB.Model(&GoodsCommon{})
+	if _, ok := condition["common_id"]; ok {
+		query = query.Where("goods_commonid", condition["common_id"])
+	}
+	query.Updates(row)
+}

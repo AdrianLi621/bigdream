@@ -295,6 +295,8 @@ func CusDirect(exchange string,queue string,routing string)  {
 
 
 
+
+
 //错误模式封装
 func failOnError(err error, msg string) {
 	if err != nil {
