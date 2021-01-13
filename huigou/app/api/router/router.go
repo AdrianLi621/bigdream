@@ -24,7 +24,7 @@ func ApiRouter(group *gin.RouterGroup) {
 
 
 		///////////
-
+		r.Any("shelve_goods", controller.ShelveGoods)//上架产品
 
 
 	}

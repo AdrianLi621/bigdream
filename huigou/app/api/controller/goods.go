@@ -139,3 +139,28 @@ func Search(ctx *gin.Context)  {
 	response["count"] = num
 	SuccessResponse(ctx, 0, response, "获取成功")
 }
+
+
+/**
+上架产品
+ */
+func ShelveGoods(ctx *gin.Context)  {
+	var goods_ids []int
+	goods_ids=[]int{1,4}
+	for _,goods_id:=range goods_ids{
+		ShelveGoodsToMq(goods_id)
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

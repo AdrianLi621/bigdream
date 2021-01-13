@@ -5,6 +5,7 @@ import (
 	"github.com/streadway/amqp"
 	"log"
 	"math/rand"
+	"strconv"
 )
 
 var Conn *amqp.Connection
@@ -17,6 +18,45 @@ func init() {
 		}
 	}
 }
+/**
+抛入待上架产品到mq
+ */
+func ShelveGoodsToMq(goods_id int)(bool,error)  {
+	ch, err := Conn.Channel()
+	defer ch.Close()
+	if err != nil {
+		return false, err
+	}
+	err=ch.ExchangeDeclare("ex_shelve_goods","direct",true,false,false,false,nil)
+	if err != nil {
+		return false, err
+	}
+	err=ch.Publish("ex_shelve_goods","shelve_goods",false,false,amqp.Publishing{
+		Body: []byte(strconv.Itoa(goods_id)),
+	})
+	if err != nil {
+		return false, err
+	}
+	return true,nil
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
 1对多模式  生产者
