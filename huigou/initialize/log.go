@@ -14,7 +14,7 @@ import (
 */
 func LoadLogConfig() *viper.Viper {
 	v := viper.New()
-	v.AddConfigPath("./config")
+	v.AddConfigPath("../config")
 	v.SetConfigName("log")
 	v.SetConfigType("yaml")
 	if err := v.ReadInConfig(); err != nil {

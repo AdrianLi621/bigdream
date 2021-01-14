@@ -146,11 +146,17 @@ func Search(ctx *gin.Context)  {
  */
 func ShelveGoods(ctx *gin.Context)  {
 	var goods_ids []int
-	goods_ids=[]int{1,4}
-	for _,goods_id:=range goods_ids{
-		ShelveGoodsToMq(goods_id)
+	for i:=0;i<10;i++{
+		goods_ids=append(goods_ids,i)
 	}
-
+	for _,goods_id:=range goods_ids{
+		res,err:=ShelveGoodsToMq(goods_id)
+		if !res {
+			BadResponse(ctx, 0, nil, err.Error())
+			return
+		}
+	}
+	SuccessResponse(ctx, 0, nil, "上架成功")
 }
 
 
