@@ -2,6 +2,8 @@ package model
 
 import (
 	. "bigdream/huigou/initialize"
+	"bigdream/huigou/pkg"
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -26,6 +28,21 @@ type GoodsCommon struct {
 	AddTime       time.Time `grom:"add_time" json:"add_time"`
 	UpdateTime    time.Time `gorm:"update_time" json:"update_time"`
 	GoodsList  []Goods      `gorm:"FOREIGNKEY:goods_commonid" json:"goods_list"`
+}
+type EsGoodsCommon struct {
+	GoodsCommonid int       `json:"goods_commonid" `
+	GoodsName     string    `json:"goods_name"`
+	StoreId       int       `json:"store_id"`
+	GoodsGcId     int       `json:"goods_gc_id"`
+	GoodsGcId1    int       `json:"goods_gc_id1"`
+	GoodsGcId2    int       `json:"goods_gc_id2"`
+	GoodsGcId3    int       `json:"goods_gc_id3"`
+	GoodsGcName   string    `json:"goods_gc_name"`
+	GoodsImage    string    `json:"goods_image"`
+	GoodsState    int       `json:"goods_state"`
+	IsDelete      int       `json:"is_delete"`
+	AddTime       time.Time `json:"add_time"`
+	UpdateTime    time.Time `json:"update_time"`
 }
 
 /**
@@ -135,4 +152,21 @@ func UpGoodsCommon(condition map[string]interface{},row map[string]interface{}){
 		query = query.Where("goods_commonid", condition["common_id"])
 	}
 	query.Updates(row)
+}
+/**
+把数据抛入es
+*/
+func MigrateGoodsCommonToES(condition map[string]interface{})(bool,error)  {
+	var sto EsGoodsCommon
+	query := DB.Model(&GoodsCommon{}).Where("1=1")
+	if _, ok := condition["common_id"]; ok {
+		query = query.Where("goods_commonid", condition["common_id"])
+	}
+	query.Find(&sto)
+	bytes,_:=json.Marshal(sto)
+	_,err:=pkg.InsertDoc("goods_common",string(bytes))
+	if err != nil{
+		return false,err
+	}
+	return true,nil
 }

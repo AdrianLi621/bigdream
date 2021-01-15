@@ -1,7 +1,5 @@
 package main
 
-import "bigdream/huigou/pkg"
-
 func main()  {
 	//ch:=make(chan int)
 	//for i:=0;i<100;i++{
@@ -16,7 +14,7 @@ func main()  {
 	//pkg.CusExc("test-change","queue_1")//广播模式
 
 
-	pkg.CusDirect("exchange_88","que_1","route_2")
+	//pkg.CusDirect("exchange_88","que_1","route_2")
 
 
 

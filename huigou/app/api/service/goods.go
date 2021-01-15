@@ -11,3 +11,6 @@ func SelectGoods(condition map[string]interface{}, page int, pageSize int, order
 func CountGoods(condition map[string]interface{}) int64 {
 	return model.CountGoods(condition)
 }
+func MigrateGoodsToES(where map[string]interface{})(bool,error)  {
+	return model.MigrateGoodsToES(where)
+}

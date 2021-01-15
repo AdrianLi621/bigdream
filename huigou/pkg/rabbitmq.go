@@ -25,11 +25,11 @@ func ShelveGoodsToMq(goods_id int)(bool,error)  {
 	if err != nil {
 		return false, err
 	}
-	err=ch.ExchangeDeclare("ex_shelve_goods","direct",true,false,false,false,nil)
+	err=ch.ExchangeDeclare("ex_shelve_goods_common","direct",true,false,false,false,nil)
 	if err != nil {
 		return false, err
 	}
-	err=ch.Publish("ex_shelve_goods","shelve_goods",false,false,amqp.Publishing{
+	err=ch.Publish("ex_shelve_goods_common","shelve_goods_common",false,false,amqp.Publishing{
 		Body: []byte(strconv.Itoa(goods_id)),
 	})
 	if err != nil {

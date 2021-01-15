@@ -2,7 +2,9 @@ package model
 
 import (
 	. "bigdream/huigou/initialize"
+	"bigdream/huigou/pkg"
 	"fmt"
+	json "github.com/json-iterator/go"
 	"time"
 )
 
@@ -26,6 +28,26 @@ type Goods struct {
 	GoodsInventory int       `gorm:"goods_inventory" json:"goods_inventory"`
 	GoodsState     int       `grom:"goods_state" json:"goods_state"`
 	GoodsSpec      string     `gorm:"goods_spec" json:"goods_spec"`
+	IsDelete       int       `grom:"is_delete" json:"is_delete"`
+	AddTime        time.Time `grom:"add_time" json:"add_time"`
+	UpdateTime     time.Time `gorm:"update_time" json:"update_time"`
+}
+type EsGoods struct {
+	GoodsId        int       `gorm:"goods_id;AUTO_INCREMENT;primary_key" json:"goods_id" `
+	GoodsCommonid  int       `gorm:"goods_commonid" json:"goods_commonid"`
+	StoreId     int    `form:"store_id" json:"store_id" binding:"required"`
+	GoodsSku       string    `grom:"goods_sku" json:"goods_sku"`
+	GoodsName      string    `grom:"goods_name" json:"goods_name"`
+	GoodsBarcode   string    `gorm:"goods_barcode" json:"goods_barcode"`
+	GoodsGcId      int       `grom:"goods_gc_id" json:"goods_gc_id"`
+	GoodsGcId1     int       `gorm:"goods_gc_id1" json:"goods_gc_id1"`
+	GoodsGcId2     int       `gorm:"goods_gc_id2" json:"goods_gc_id2"`
+	GoodsGcId3     int       `gorm:"goods_gc_id3" json:"goods_gc_id3"`
+	GoodsGcName    string    `gorm:"goods_gc_name" json:"goods_gc_name"`
+	GoodsPrice     int       `grom:"goods_price" json:"goods_price"`
+	GoodsSalenum   int       `grom:"goods_salenum" json:"goods_salenum"`
+	GoodsInventory int       `gorm:"goods_inventory" json:"goods_inventory"`
+	GoodsState     int       `grom:"goods_state" json:"goods_state"`
 	IsDelete       int       `grom:"is_delete" json:"is_delete"`
 	AddTime        time.Time `grom:"add_time" json:"add_time"`
 	UpdateTime     time.Time `gorm:"update_time" json:"update_time"`
@@ -101,4 +123,24 @@ func SelectGoods(condition map[string]interface{}, page int, pageSize int, order
 	}
 	query.Find(&sto)
 	return sto
+}
+/**
+把数据抛入es
+*/
+func MigrateGoodsToES(condition map[string]interface{})(bool,error)  {
+	var sto []EsGoods
+	query := DB.Model(&Goods{}).Where("1=1")
+	if _, ok := condition["common_id"]; ok {
+		query = query.Where("goods_commonid", condition["common_id"])
+	}
+	query.Find(&sto)
+	for _,d:=range sto{
+		bytes,_:=json.Marshal(d)
+		_,err:=pkg.InsertDoc("goods",string(bytes))
+		if err != nil{
+			return false,err
+		}
+	}
+
+	return true,nil
 }

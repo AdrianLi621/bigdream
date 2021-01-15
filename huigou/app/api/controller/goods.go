@@ -2,10 +2,11 @@ package controller
 
 import (
 	"bigdream/huigou/app/api/service"
-	"bigdream/huigou/model"
 	. "bigdream/huigou/pkg"
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type GoodsForm struct {
@@ -120,24 +121,20 @@ func CreateGoods(ctx *gin.Context) {
 搜索
  */
 func Search(ctx *gin.Context)  {
-	a,_:=SelectDoc("student")
-	var t model.GoodsCommon
-	goods_data := make(map[string]interface{})
-	var num int
-	for _,v:=range a{
-		err:=json.Unmarshal(v.Source,&t)
-		if err != nil {
-			BadResponse(ctx, 0, nil, err.Error())
+	defer func() {
+		if err:=recover();err!= nil{
+			fmt.Println(err)
 		}
-		goods_data["goods_name"] = t.GoodsName
-		goods_data["goods_image"] = t.GoodsImage
-		goods_data["goods_gc_name"] = t.GoodsGcName
-		num++
+	}()
+	resp,err:=SelectDoc("goods_common","goods_name","当天")
+	if err != nil{
+		panic(err)
 	}
-	response := make(map[string]interface{})
-	response["list"] = goods_data
-	response["count"] = num
-	SuccessResponse(ctx, 0, response, "获取成功")
+	fmt.Println("共查询到"+strconv.Itoa(len(resp))+"条数据")
+	for _,v:=range resp{
+		fmt.Println(string(v.Source))
+	}
+
 }
 
 
@@ -146,9 +143,7 @@ func Search(ctx *gin.Context)  {
  */
 func ShelveGoods(ctx *gin.Context)  {
 	var goods_ids []int
-	for i:=0;i<10;i++{
-		goods_ids=append(goods_ids,i)
-	}
+	goods_ids=[]int{3,4}
 	for _,goods_id:=range goods_ids{
 		res,err:=ShelveGoodsToMq(goods_id)
 		if !res {

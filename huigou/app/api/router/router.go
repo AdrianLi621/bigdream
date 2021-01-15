@@ -20,9 +20,6 @@ func ApiRouter(group *gin.RouterGroup) {
 		r.POST("get_seckill_list", controller.SeckillList) //秒杀列表
 		r.Any("search_goods", controller.Search)//搜索产品
 
-
-
-
 		///////////
 		r.Any("shelve_goods", controller.ShelveGoods)//上架产品
 

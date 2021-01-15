@@ -17,3 +17,6 @@ func SelectGoodsByCommonid(condition map[string]interface{}, page int, pageSize 
 func UpGoodsCommon(where map[string]interface{},row map[string]interface{})  {
 	model.UpGoodsCommon(where,row)
 }
+func MigrateGoodsCommonToES(where map[string]interface{})(bool,error)  {
+	return model.MigrateGoodsCommonToES(where)
+}

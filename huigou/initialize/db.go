@@ -32,12 +32,18 @@ func InitDB() *gorm.DB {
 */
 func LoadDBConfig() *viper.Viper {
 	v := viper.New()
-	v.AddConfigPath("./config")
-	v.SetConfigName("database")
-	v.SetConfigType("yaml")
-	if err := v.ReadInConfig(); err != nil {
-		panic("加载database配置文件出错")
-	}
+	//v.AddConfigPath("./config")
+	//v.SetConfigName("database")
+	//v.SetConfigType("yaml")
+	v.SetDefault("Host", "121.5.22.154")
+	v.SetDefault("UserName","root")
+	v.SetDefault("Password", "123456")
+	v.SetDefault("Port",3306)
+	v.SetDefault("DBName", "yali")
+
+	//if err := v.ReadInConfig(); err != nil {
+	//	panic("加载database配置文件出错")
+	//}
 	return v
 }
 
@@ -57,6 +63,7 @@ func ConnectDB() *gorm.DB {
 			TablePrefix:   "hg_",
 			SingularTable: true,
 		},
+
 	})
 	if err != nil {
 		panic("连接数据库失败")
